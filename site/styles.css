@@ -1,0 +1,121 @@
+/* Matches the Carrd build: Times New Roman, left-aligned, 38rem column, 0.75rem block spacing. */
+
+:root {
+  --page-bg: #FFFFFF;   /* pure white like alexbrogan.com. Carrd's original was #EDEDED behind a white card */
+  --card-bg: #FFFFFF;
+  --text: #000000;
+  --font: 'Times New Roman', serif;
+  --width: 38rem;
+  --padding-horizontal: 3rem;
+  --padding-vertical: 3rem;
+  --spacing: 0.75rem;
+}
+
+/* Carrd's responsive base size */
+html { font-size: 18pt; }
+@media (max-width: 1680px) { html { font-size: 13pt; } }
+@media (max-width: 980px)  { html { font-size: 11pt; } }
+@media (max-width: 736px)  { :root { --padding-horizontal: 2rem; } }
+@media (max-width: 480px)  { :root { --spacing: 0.65625rem; } }
+@media (max-width: 360px)  { :root { --padding-horizontal: 1.5rem; --padding-vertical: 2.25rem; --spacing: 0.5625rem; } }
+
+* { margin: 0; padding: 0; border: 0; font: inherit; vertical-align: baseline; box-sizing: border-box; }
+
+html, body { min-height: 100%; }
+body {
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1;
+  min-width: 320px;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  -webkit-text-size-adjust: none;
+}
+
+.site-main {
+  display: flex;
+  align-items: flex-start;  /* top-aligned (Carrd centered its gray card vertically; on a white page that looks odd on short pages) */
+  justify-content: center;
+  min-height: 100vh;
+  text-align: left;
+}
+
+.inner {
+  background: var(--card-bg);
+  width: var(--width);
+  max-width: 100%;
+  padding: var(--padding-vertical) var(--padding-horizontal);
+  display: flow-root;       /* contains floated (wrapped) images */
+}
+.inner > * { margin-top: var(--spacing); margin-bottom: var(--spacing); }
+.inner > :first-child { margin-top: 0; }
+.inner > :last-child { margin-bottom: 0; }
+
+/* text blocks */
+.text { line-height: 1.5; font-weight: 400; }
+.text.name    { font-size: 1.25em; font-weight: 700; }
+.text.tagline { font-size: 0.75em; }
+.text.heading { font-size: 0.875em; }
+.text.heading.small { font-size: 0.75em; }
+.text.body    { font-size: 0.625em; }
+strong { font-weight: 700; }
+em { font-style: italic; }
+
+a { color: inherit; text-decoration: underline; }
+a:hover { text-decoration: none; }
+
+/* image (--w = width, set per block by the editor's size buttons) */
+.image { display: block; line-height: 0; text-align: right; }
+.image > .frame { display: inline-block; width: var(--w, 4.125rem); max-width: 100%; overflow: hidden; vertical-align: top; }
+.image > .frame > img { width: 100%; max-width: 100%; vertical-align: top; }
+
+/* link row */
+.links { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; font-size: 0.625em; line-height: 1.5; }
+@media (max-width: 980px) { .links { gap: 0.375rem; } }
+
+/* photo row: small thumbnails, click to open full size */
+.photos { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; line-height: 0; }
+.photos > li { width: var(--w, 4.125rem); }
+.photos img { width: 100%; height: var(--w, 4.125rem); object-fit: cover; vertical-align: top; }
+
+/* gallery page: stacked photos, click to open full size */
+.gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; list-style: none; line-height: 0; }
+.gallery img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; vertical-align: top; }
+@media (max-width: 480px) { .gallery { grid-template-columns: 1fr; } }
+.gallery.single { grid-template-columns: 1fr; }
+.gallery.single img { aspect-ratio: auto; }
+/* row: photos side by side at one shared height, keeping their own proportions */
+.gallery.row { display: flex; flex-wrap: wrap; align-items: flex-start; --h: 11rem; }
+.gallery.row > li { width: auto; }
+.gallery.row img { width: auto; height: var(--h); max-width: 100%; aspect-ratio: auto; object-fit: contain; }
+.back { font-size: 0.625em; line-height: 1.5; }
+
+/* bullet lists */
+.list { list-style: none; font-size: 0.625em; line-height: 1.5; width: 100%; }
+.list > li { display: flex; margin-top: 0.5rem; }
+.list > li:first-child { margin-top: 0; }
+.list > li::before {
+  content: '';
+  flex: 0 0 auto;
+  min-width: 0.439453125rem;
+  height: 0.9375rem;
+  margin-right: 0.5rem;
+  background: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='10' fill='%23000000'/%3E%3C/svg%3E") left 60% / contain no-repeat;
+}
+
+/* ---- layout classes set by the editor ---- */
+.align-left   { text-align: left; }
+.align-center { text-align: center; }
+.align-right  { text-align: right; }
+.links.align-left, .photos.align-left     { justify-content: flex-start; }
+.links.align-center, .photos.align-center { justify-content: center; }
+.links.align-right, .photos.align-right   { justify-content: flex-end; }
+.list.align-center { display: table; width: auto; margin-left: auto; margin-right: auto; }
+.list.align-right  { display: table; width: auto; margin-left: auto; margin-right: 0; }
+
+/* wrap text around a block (floats shrink to the image's width) */
+.inner > .wrap-left  { float: left;  margin: 0.2rem 1rem 0.5rem 0; max-width: 60%; }
+.inner > .wrap-right { float: right; margin: 0.2rem 0 0.5rem 1rem; max-width: 60%; }
+.inner > .wrap-left + *, .inner > .wrap-right + * { margin-top: 0; }
+.inner > .clear { clear: both; }
